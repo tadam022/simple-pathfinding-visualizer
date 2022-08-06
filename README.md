@@ -5,9 +5,13 @@ It requires Python 3.x and the Pygame library and can be run with the main.py fi
 Controls:
 
 LMB places walls (can click or drag mouse on grid)
+
 Holding R with LMB places brown weighted nodes with weight 5.
+
 Holding T with LMB places purple weighted nodes with weight 2.
+
 Note that blank nodes (white) have weight 1.
+
 Click on the 'Board Legend' within the application to see what each node color represents.
 
 RMG clears walls or any other placed nodes
