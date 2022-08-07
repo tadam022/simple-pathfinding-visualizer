@@ -172,10 +172,13 @@ def draw_GUI(show_instructions=False, show_legend=False):
         x += LINE_THICKNESS
         y = x
 
-        instructions_text = " Press S with LMB to place start node\n" \
-                            " Press E  with LMB to place end node\n" \
-                            " Press space bar to start selected algorithm\n" \
+        instructions_text = " Use LMB to place walls" \
                             " Use RMB to clear tiles \n" \
+                            " Press S with LMB to place start node\n" \
+                            " Press E  with LMB to place end node\n" \
+                            " Press T with LMB to place nodes with weight 2" \
+                            " Press R with LMB to place nodes with weight 5" \
+                            " Press space bar to start selected algorithm\n" \
                             " Press C to clear board\n" \
                             " Press V to clear and keep walls\n" \
                             " Press B to clear and keep start, end and walls\n" \
@@ -205,6 +208,7 @@ def text_box(surface, text, pos_x, pos_y, text_color):
 
             word_surface = font2.render(row[i], True, text_color)
             word_width, word_height = word_surface.get_size()
+
 
             if x + word_width >= max_w:
                 x = pos_x
@@ -527,7 +531,7 @@ def a_star_algorithm(board, start_pos, end_pos, diagonals_on, speed, increments,
     count = 0  # tie breaker for better/smoother looking visualization
     start_node = Node(start_pos, True)
     end_node = Node(end_pos, True)
-    current_cost = {start_node: 0}
+    current_cost = {start_node: 0} # node: cost
     open_vertices.put((0, count, start_node))
     # Compares TUPLES lexographically, first compares the first tuple item of each priority,
     # if they are equal it then compares the next.
@@ -572,18 +576,19 @@ def a_star_algorithm(board, start_pos, end_pos, diagonals_on, speed, increments,
                         increment = increments[new_node.weight]
                     else:
                         increment = new_node.weight
+
                     new_node.distance += increment
 
-                    new_cost = current_cost[current_node] + increment
+                    new_cost = current_cost[current_node] + increment # not necessarily equal to current_node.distance
 
                     if new_node not in current_cost or new_cost < current_cost[new_node]:
-                        count += increment
+                        count += increment # could be incremented by some other amount
                         current_cost[new_node] = new_cost
                         priority = new_cost
 
                         if use_heuristic:
                             priority += heuristic(new_node.position, end_node.position)
-                        open_vertices.put((priority, count, new_node))  # TIE BREAKER. SMOOTHER FOR NO DIAGNONALS
+                        open_vertices.put((priority, count, new_node))  # TIE BREAKER. SMOOTHER FOR NO DIAGONALS
                         if new_node != end_node:
                             color_visited(board, new_node.position, show_detailed_colors)
 
